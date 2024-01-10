@@ -1,4 +1,4 @@
-name: "Deploy Resources"
+name: "Bicep Deploy Resources"
 
 on:
   push:
@@ -6,15 +6,15 @@ on:
   workflow_dispatch:
 
 env: 
-  ARM_CLIENT_ID: "${{ secrets.AZURE_CLIENT_ID_CONTACTWEB_DEV }}"
-  ARM_SUBSCRIPTION_ID: "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
-  ARM_TENANT_ID: "${{ secrets.AZURE_TENANT_ID }}"
   CURRENT_BRANCH: ${{ github.head_ref || github.ref_name }} 
+  AZURE_TENANT_ID:  ${{ secrets.AZURE_TENANT_ID }}
+  AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  AZURE_CLIENT_ID_CONTACTWEB_DEV: '${{ secrets.AZURE_CLIENT_ID_CONTACTWEB_DEV }}'
   TEMPLATE: 'iac/deployContactWebArchitecture.bicep'
   PARAMETERS: 'iac/deployContactWebArchitecture.parameters.json'  
   DEPLOYMENT_NAME: 'BicepDeployResources'
   REGION: 'eastus'
-
+  
 permissions:
   id-token: write
   contents: read
@@ -47,4 +47,3 @@ jobs:
           parameters: '${{ env.PARAMETERS }}'
           deploymentName: '${{env.DEPLOYMENT_NAME}}-${{github.run_number}}'
           failOnStdErr: true
-
